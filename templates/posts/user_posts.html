@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1 class="mb-4">Posts by {{ view.kwargs.username }}</h1>
+        <p class="text-muted">Total posts: {{ page_obj.paginator.count }}</p>
+        
+        {% for post in posts %}
+        <div class="card mb-4">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h2 class="card-title"><a href="{% url 'posts:detail' post.slug %}" class="text-decoration-none">{{ post.title }}</a></h2>
+                <p class="text-muted">
+                    Posted on {{ post.published_at|date:"F d, Y" }} in 
+                    <a href="{% url 'posts:category' post.category.slug %}">{{ post.category.name }}</a>
+                </p>
+                <p class="card-text">{{ post.content|truncatewords:30|linebreaks }}</p>
+                <a href="{% url 'posts:detail' post.slug %}" class="btn btn-primary">Read More</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">No posts available yet.</div>
+        {% endfor %}
+        
+        {% include 'includes/pagination.html' %}
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>User Profile</h5>
+            </div>
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    {% if user_profile.avatar %}
+                        <img src="{{ user_profile.avatar.url }}" class="rounded-circle" width="150" height="150" alt="Profile Image">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="rounded-circle" alt="Profile Image">
+                    {% endif %}
+                </div>
+                <h5>{{ user_profile.username }}</h5>
+                <p class="text-muted">Member since: {{ user_profile.date_joined|date:"F d, Y" }}</p>
+                <p>Total posts: {{ page_obj.paginator.count }}</p>
+                
+                {% if request.user == user_profile %}
+                    <a href="{% url 'users:profile' %}" class="btn btn-outline-primary mt-3">Edit Profile</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <article class="card mb-4">
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h1 class="card-title">{{ post.title }}</h1>
+                <p class="text-muted">
+                    Posted by <a href="{% url 'posts:user_posts' post.author.username %}">{{ post.author.username }}</a> 
+                    on {{ post.published_at|date:"F d, Y" }} in 
+                    <a href="{% url 'posts:category' post.category.slug %}">{{ post.category.name }}</a>
+                </p>
+                <div class="card-text">
+                    {{ post.content|linebreaks }}
+                </div>
+                {% if post.author == user %}
+                <div class="mt-4">
+                    <a href="{% url 'posts:update' post.slug %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'posts:delete' post.slug %}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+        </article>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>About Category</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ post.category.description }}</p>
+                <a href="{% url 'posts:category' post.category.slug %}" class="btn btn-outline-primary btn-sm">
+                    View all posts in this category
+                </a>
+            </div>
+        </div>
+        
+        {% if related_posts %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Related Posts</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for post in related_posts %}
+                    <li class="mb-2">
+                        <a href="{% url 'posts:detail' post.slug %}">{{ post.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

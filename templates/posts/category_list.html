@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1 class="mb-4">Categories</h1>
+        <div class="list-group">
+            {% for category in categories %}
+            <a href="{% url 'posts:category' category.slug %}" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ category.name }}</h5>
+                    <small>{{ category.post_set.count }} posts</small>
+                </div>
+                <p class="mb-1">{{ category.description|truncatewords:20 }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Popular Categories</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    {% for category in categories|slice:":5" %}
+                    <li class="mb-2">
+                        <a href="{% url 'posts:category' category.slug %}">{{ category.name }}</a>
+                        <span class="badge bg-primary rounded-pill">{{ category.post_set.count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

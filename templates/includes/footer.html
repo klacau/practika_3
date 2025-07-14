@@ -1,0 +1,32 @@
+<footer class="bg-dark text-white mt-5">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>About Blog</h5>
+                <p>A simple blog platform built with Django for sharing your thoughts and ideas.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'posts:home' %}" class="text-white">Home</a></li>
+                    <li><a href="{% url 'posts:about' %}" class="nav-link">About</a></li>
+                    <li><a href="{% url 'posts:categories' %}" class="text-white">Categories</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'posts:create' %}" class="text-white">Create Post</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li>Email: info@simpleblog.com</li>
+                    <li>Phone: +1234567890</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="text-center">
+            <p class="mb-0">&copy; 2023 Simple Blog. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
