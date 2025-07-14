@@ -11,7 +11,6 @@ class CustomAdminSite(admin.AdminSite):
     def logout(self, request, extra_context=None):
         from django.contrib.auth import logout
         logout(request)
-        # Явно указываем редирект на страницу входа в админку
         return HttpResponseRedirect(reverse('admin:login'))
 
 class PostAdmin(admin.ModelAdmin):
